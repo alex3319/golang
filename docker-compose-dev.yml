@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+
+  web:
+    container_name: $APP_NAME-webserver
+    build: ./
+    ports:
+      - $WEBSERVER_PORT:8000
+    environment:
+      DD_DB_HOST: db
+    command: /server
+    depends_on:
+      - db
+  db:
+    container_name: dockerdev-db
+    image: postgres:14.1-alpine
+    ports:
+      - $DB_PORT:5432
+    environment:
+      POSTGRES_USER: goland
+      POSTGRES_PASSWORD: goland
+      POSTGRES_DB: goland
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./codeInfrastructure/data/pgsql/data:/var/lib/postgresql/data/pgdata/
+
+
+
+
+
+
+
